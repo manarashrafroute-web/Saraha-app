@@ -152,6 +152,25 @@ userController.get("/getUserById/:id", auth, async (req, res) => {
 })
 
 
+userController.put("/updtaePassword/:id", auth, async (req, res) => {
+
+
+    const data = await userSrvices.updatepassword(req.params.id)
+
+
+    if (data === "invalidId") {
+        return res.status(422).json({ message: "invalid user id" })
+    }
+
+    if (data === "userNotFound") {
+        return res.status(404).json({ message: "user Not Found" })
+    }
+
+    return res.status(200).json({ message: "user", user: data })
+
+
+})
+
 
 
 export default userController
