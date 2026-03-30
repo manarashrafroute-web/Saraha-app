@@ -313,3 +313,23 @@ export const updatepassword = async (userId) => {
 }
 
 
+export const Forgetpassword = async (userId) => {
+
+    if (!isValidObjectId(userId)) return "invalidId"
+
+    const user = await User.findById(userId).select("name email phone -_id").lean()
+
+    if (user?.phone) {
+        const decryption = CryptoJS.AES.decrypt(user.phone, E_secret)
+        user.phone = decryption.toString(CryptoJS.enc.Utf8)
+
+    }
+
+    if (!user) return "userNotFound"
+
+
+    return user
+
+
+}
+
